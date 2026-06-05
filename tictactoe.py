@@ -1,4 +1,4 @@
-from ai import random_ai
+from ai import finds_winning_and_losing_moves_ai
 
 def new_board():
     return [[None, None, None],
@@ -32,6 +32,10 @@ def make_move(board, move_coords, player):
     board[y][x] = player
     return True
 
+def human_player(board, player):
+    """Интерфейс для человека, соответствующий ИИ-функциям"""
+    return get_move()
+
 def get_winner(board):
     # строки
     for row in board:
@@ -55,13 +59,42 @@ def is_board_full(board):
     return True
 
 def main():
+    print("Выберите режим:")
+    print("1. Человек против ИИ (атака+блок)")
+    print("2. ИИ против ИИ")
+    print("3. Человек против человека")
+    mode = input("Ваш выбор: ")
+    
+    if mode == '1':
+        player_funcs = {
+            'X': human_player,
+            'O': finds_winning_and_losing_moves_ai
+        }
+    elif mode == '2':
+        player_funcs = {
+            'X': finds_winning_and_losing_moves_ai,
+            'O': finds_winning_and_losing_moves_ai
+        }
+    else:
+        player_funcs = {
+            'X': human_player,
+            'O': human_player
+        }
+    # Определяем, кто за кого играет
+    player_funcs = {
+        'X': human_player,          # человек за X
+        'O': finds_winning_and_losing_moves_ai   # ИИ за O
+    }
     board = new_board()
     current_player = 'X'
 
     while True:
         render(board)
         print(f"Ход игрока {current_player}")
-        move = get_move()
+        
+        # Вызываем функцию для текущего игрока (единый интерфейс!)
+        move = player_funcs[current_player](board, current_player)
+        
         if make_move(board, move, current_player):
             winner = get_winner(board)
             if winner:
@@ -74,7 +107,7 @@ def main():
                 break
             current_player = 'O' if current_player == 'X' else 'X'
         else:
-            print("Попробуйте снова.")
+            print("Клетка занята, попробуйте снова.")
 
 if __name__ == "__main__":
     main()
