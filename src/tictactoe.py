@@ -1,11 +1,13 @@
 import sys
-from ai import random_ai, finds_winning_moves_ai, finds_winning_and_losing_moves_ai
+from ai import random_ai, finds_winning_moves_ai, finds_winning_and_losing_moves_ai, minimax_ai
+from game_logic import get_winner, is_board_full
 
 # Словарь, сопоставляющий строки с функциями ИИ
 AI_FUNCTIONS = {
     'random_ai': random_ai,
     'winning_ai': finds_winning_moves_ai,
-    'blocking_ai': finds_winning_and_losing_moves_ai,  # атака + блок
+    'blocking_ai': finds_winning_and_losing_moves_ai,
+    'minimax_ai': minimax_ai
 }
 
 def new_board():
@@ -43,28 +45,6 @@ def make_move(board, move_coords, player):
 def human_player(board, player):
     """Интерфейс для человека, соответствующий ИИ-функциям"""
     return get_move()
-
-def get_winner(board):
-    # строки
-    for row in board:
-        if row[0] == row[1] == row[2] and row[0] is not None:
-            return row[0]
-    # столбцы
-    for col in range(3):
-        if board[0][col] == board[1][col] == board[2][col] and board[0][col] is not None:
-            return board[0][col]
-    # диагонали
-    if board[0][0] == board[1][1] == board[2][2] and board[0][0] is not None:
-        return board[0][0]
-    if board[0][2] == board[1][1] == board[2][0] and board[0][2] is not None:
-        return board[0][2]
-    return None
-
-def is_board_full(board):
-    for row in board:
-        if None in row:
-            return False
-    return True
 
 def play(player1_name, player2_name):
     """Сыграть одну партию между двумя ИИ, вернуть 0/1/2"""
