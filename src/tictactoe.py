@@ -1,13 +1,13 @@
 import sys
-from ai import random_ai, finds_winning_moves_ai, finds_winning_and_losing_moves_ai, minimax_ai
+from ai import random_ai, finds_winning_moves_ai, finds_winning_and_losing_moves_ai, minimax_ai, minimax_ai_alpha_beta
 from game_logic import get_winner, is_board_full
 
-# Словарь, сопоставляющий строки с функциями ИИ
 AI_FUNCTIONS = {
     'random_ai': random_ai,
     'winning_ai': finds_winning_moves_ai,
     'blocking_ai': finds_winning_and_losing_moves_ai,
-    'minimax_ai': minimax_ai
+    'minimax_ai': minimax_ai,
+    'minimax_alpha_beta': minimax_ai_alpha_beta,
 }
 
 def new_board():

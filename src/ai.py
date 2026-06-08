@@ -3,20 +3,67 @@ import copy
 from game_logic import get_winner, is_board_full
 from functools import lru_cache
 
-def minimax_ai(board, current_player):
-    """Идеальный ИИ с кэшированием результатов"""
-    # Преобразуем доску в неизменяемый вид
+def minimax_ai_alpha_beta(board, current_player):
     board_tuple = tuple(tuple(row) for row in board)
-    # Вызываем кэшированную функцию, передаём текущего игрока
+    _, best_move = _minimax_alpha_beta(board_tuple, current_player, True, -float('inf'), float('inf'))
+    return best_move
+
+def _minimax_alpha_beta(board_tuple, player, is_maximizing, alpha, beta):
+    board = [list(row) for row in board_tuple]
+    opponent = 'O' if player == 'X' else 'X'
+    
+    winner = get_winner(board)
+    if winner is not None or is_board_full(board):
+        if winner == player:
+            return (1, None)
+        elif winner == opponent:
+            return (-1, None)
+        return (0, None)
+    
+    if is_maximizing:
+        best_score = -float('inf')
+        best_move = None
+        for y in range(3):
+            for x in range(3):
+                if board[y][x] is None:
+                    board[y][x] = player
+                    score, _ = _minimax_alpha_beta(
+                        tuple(tuple(row) for row in board), player, False, alpha, beta
+                    )
+                    board[y][x] = None
+                    if score > best_score:
+                        best_score = score
+                        best_move = (x, y)
+                    alpha = max(alpha, best_score)
+                    if alpha >= beta:
+                        return (best_score, best_move)
+        return (best_score, best_move)
+    else:
+        best_score = float('inf')
+        best_move = None
+        for y in range(3):
+            for x in range(3):
+                if board[y][x] is None:
+                    board[y][x] = opponent
+                    score, _ = _minimax_alpha_beta(
+                        tuple(tuple(row) for row in board), player, True, alpha, beta
+                    )
+                    board[y][x] = None
+                    if score < best_score:
+                        best_score = score
+                        best_move = (x, y)
+                    beta = min(beta, best_score)
+                    if alpha >= beta:
+                        return (best_score, best_move)
+        return (best_score, best_move)
+
+def minimax_ai(board, current_player):
+    board_tuple = tuple(tuple(row) for row in board)
     _, best_move = _minimax_cached(board_tuple, current_player, True)
     return best_move
 
 @lru_cache(maxsize=None)
 def _minimax_cached(board_tuple, player, is_maximizing):
-    """
-    Рекурсивный минимакс с кэшированием.
-    Возвращает (оценка, лучший_ход) для текущей позиции.
-    """
     board = [list(row) for row in board_tuple]
     opponent = 'O' if player == 'X' else 'X'
     
@@ -58,7 +105,6 @@ def _minimax_cached(board_tuple, player, is_maximizing):
         return (best_score, best_move)
 
 def random_ai(board, player):
-    """Случайный допустимый ход"""
     empty_cells = []
     for y in range(3):
         for x in range(3):
@@ -67,7 +113,6 @@ def random_ai(board, player):
     return random.choice(empty_cells) if empty_cells else None
 
 def find_winning_move(board, player):
-    """Возвращает координаты выигрышного хода для player, если он есть, иначе None"""
     for y in range(3):
         row = board[y]
         if row.count(player) == 2 and row.count(None) == 1:
@@ -89,18 +134,12 @@ def find_winning_move(board, player):
     return None
 
 def finds_winning_moves_ai(board, player):
-    """Выигрышный ход, иначе случайный"""
     move = find_winning_move(board, player)
     if move:
         return move
     return random_ai(board, player)
 
 def finds_winning_and_losing_moves_ai(board, player):
-    print("=== DEBUG ===")
-    for row in board:
-        print(row)
-    print("player:", player)
-    
     move = find_winning_move(board, player)
     if move:
         print("winning move:", move, "value at that cell:", board[move[1]][move[0]])
@@ -126,7 +165,6 @@ if __name__ == "__main__":
     ]
     move = random_ai(test_board, 'X')
     print("random_ai вернул:", move)
-    # Проверим, действительно ли клетка пуста
     x, y = move
     if test_board[y][x] is not None:
         print("ОШИБКА: клетка занята!", test_board[y][x])
