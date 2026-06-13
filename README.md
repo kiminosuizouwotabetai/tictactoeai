@@ -34,5 +34,7 @@ python src/tictactoe.py
 bash
 python src/tictactoe.py random_ai blocking_ai --battle=1000
 
+Проект выполнен полностью в стеке backend.
+
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=kiminosuizouwotabetai_tictactoeai&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=kiminosuizouwotabetai_tictactoeai)
