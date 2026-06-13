@@ -1,3 +1,15 @@
+def new_board():
+    return [[None, None, None],
+            [None, None, None],
+            [None, None, None]]
+
+def make_move(board, move_coords, player):
+    x, y = move_coords
+    if board[y][x] is not None:
+        return False
+    board[y][x] = player
+    return True
+
 def get_winner(board):
     for row in board:
         if row[0] == row[1] == row[2] and row[0] is not None:

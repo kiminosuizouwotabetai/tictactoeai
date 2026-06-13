@@ -1,6 +1,6 @@
 import random
 import copy
-from game_logic import get_winner, is_board_full
+from .game_logic import get_winner, is_board_full
 from functools import lru_cache
 
 def minimax_ai_alpha_beta(board, current_player):

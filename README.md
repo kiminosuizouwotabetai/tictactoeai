@@ -7,7 +7,9 @@
 pip install -r requirements.txt
 python src/ti   ctactoe.py
 
-### Вариант 2: пока не готов
+### Вариант 2: из исполнительного файла .exe
+
+Тут все очень просто: заходите в Releases, качаете .exe и играете!
 
 ### Игровой процесс
 
@@ -23,7 +25,7 @@ python src/ti   ctactoe.py
 
 - blocking_ai – атака + защита
 
-- minimax_ai – непобедимый (будет добавлен)
+- minimax_ai – непобедимый (реально непобедимый)
 
 ### Бонус
 
