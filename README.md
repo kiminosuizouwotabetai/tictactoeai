@@ -33,3 +33,6 @@ python src/ti   ctactoe.py
 
 bash
 python src/tictactoe.py random_ai blocking_ai --battle=1000
+
+
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=kiminosuizouwotabetai_tictactoeai&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=kiminosuizouwotabetai_tictactoeai)
