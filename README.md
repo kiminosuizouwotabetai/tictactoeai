@@ -5,7 +5,7 @@
 ### Вариант 1: из исходного кода (требуется Python 3.7+)
 
 pip install -r requirements.txt
-python src/ti   ctactoe.py
+python src/tictactoe.py
 
 ### Вариант 2: из исполнительного файла .exe
 
